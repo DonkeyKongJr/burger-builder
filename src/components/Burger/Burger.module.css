@@ -1,0 +1,30 @@
+.Burger {
+  width: 100%;
+  margin: auto;
+  height: 250px;
+  overflow: auto;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+@media screen and (min-width: 500px), screen and (max-heigth: 400px) {
+  .Burger {
+    width: 350px;
+    height: 300px;
+  }
+}
+
+@media screen and (min-width: 500px), screen and (min-heigth: 401px) {
+  .Burger {
+    width: 450px;
+    height: 400px;
+  }
+}
+
+@media screen and (min-width: 1000px), screen and (min-heigth: 700px) {
+  .Burger {
+    width: 400px;
+    height: 600px;
+  }
+}
