@@ -3,6 +3,13 @@ import Aux from '../../../hoc/Auxiliary';
 import Burger from '../../Burger/Burger';
 import BuildControls from '../../Burger/BuildControls/BuildControls';
 
+const IngredientPrices = {
+  salad: 0.5,
+  cheese: 0.4,
+  meat: 1.3,
+  bacon: 0.7,
+};
+
 class BurgerBuilder extends Component {
   state = {
     ingredients: {
@@ -11,13 +18,58 @@ class BurgerBuilder extends Component {
       cheese: 0,
       meat: 0,
     },
+    totalPrice: 4,
+  };
+
+  addIngredientHandler = (type) => {
+    const oldCount = this.state.ingredients[type];
+    const updatedCount = oldCount + 1;
+    const updatedIngredient = { ...this.state.ingredients };
+
+    updatedIngredient[type] = updatedCount;
+
+    const priceAddition = IngredientPrices[type];
+    const oldPrice = this.state.totalPrice;
+    const newPrice = oldPrice + priceAddition;
+
+    this.setState({ totalPrice: newPrice, ingredients: updatedIngredient });
+  };
+
+  removeIngredientHandler = (type) => {
+    const oldCount = this.state.ingredients[type];
+    if (oldCount <= 0) {
+      return;
+    }
+
+    const updatedCount = oldCount - 1;
+    const updatedIngredient = { ...this.state.ingredients };
+
+    updatedIngredient[type] = updatedCount;
+
+    const priceRemoval = IngredientPrices[type];
+    const oldPrice = this.state.totalPrice;
+    const newPrice = oldPrice - priceRemoval;
+
+    this.setState({ totalPrice: newPrice, ingredients: updatedIngredient });
   };
 
   render() {
+    const disabledInfo = {
+      ...this.state.ingredients,
+    };
+
+    for (let key in disabledInfo) {
+      disabledInfo[key] = disabledInfo[key] <= 0 ? true : false;
+    }
+
     return (
       <Aux>
         <Burger ingredients={this.state.ingredients} />
-        <BuildControls />
+        <BuildControls
+          ingredientAdded={this.addIngredientHandler}
+          ingredientRemoved={this.removeIngredientHandler}
+          disabled={disabledInfo}
+        />
       </Aux>
     );
   }
